@@ -1,0 +1,33 @@
+### Create Question
+POST localhost:8080/api/questions
+Authorization: Basic gusckd57@naver.com as661899
+content-type: application/json
+
+{
+  "title": "질문입니다.",
+  "content": "내용입니다",
+  "tags": []
+}
+
+### Put Question
+PUT localhost:8080/api/questions/3
+Authorization: Basic gusckd57@naver.com as661899
+content-type: application/json
+
+{
+  "title": "질문2입니다.",
+  "content": "내용2입니다",
+  "tags": []
+}
+
+### Get Detail Question
+GET localhost:8080/api/questions/3
+Authorization: Basic gusckd57@naver.com as661899
+
+### Get Questions
+GET localhost:8080/api/questions?title=
+Authorization: Basic gusckd57@naver.com as661899
+
+### Get My Questions
+GET localhost:8080/api/questions/me
+Authorization: Basic gusckd57@naver.com as661899
