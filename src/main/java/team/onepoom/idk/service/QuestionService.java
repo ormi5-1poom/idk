@@ -57,7 +57,7 @@ public class QuestionService {
     @Transactional
     public void modifyQuestion(Provider provider, long id, ModifyQuestionRequest request) {
         Question question = findQuestion(id);
-        question.checkQuestionOwner(provider, question);
+        question.checkQuestionOwner(provider);
         question.modifyQuestion(request);
     }
 
@@ -65,7 +65,7 @@ public class QuestionService {
     @Transactional
     public void deleteQuestion(Provider provider, Long id) {
         Question question = findQuestion(id);
-        question.checkQuestionOwner(provider, question);
+        question.checkQuestionOwner(provider);
         question.validateDeleteCondition(question);
         questionRepository.delete(question);
     }
