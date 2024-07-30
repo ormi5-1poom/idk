@@ -1,5 +1,6 @@
 package team.onepoom.idk.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,22 +31,25 @@ class QuestionController {
 
     private final QuestionService questionService;
 
+    @RolesAllowed({"USER"})
     @PostMapping
     public void createQuestion(@AuthenticationPrincipal Provider provider, @RequestBody CreateQuestionRequest request) {
         questionService.createQuestion(provider, request);
     }
 
-    @PutMapping("{id}")
+    @RolesAllowed({"USER"})
+    @PutMapping("/{id}")
     public void modify(@AuthenticationPrincipal Provider provider, @PathVariable long id, @RequestBody ModifyQuestionRequest request) {
         questionService.modifyQuestion(provider, id, request);
     }
 
-    @DeleteMapping("{id}")
+    @RolesAllowed({"USER"})
+    @DeleteMapping("/{id}")
     public void delete(@AuthenticationPrincipal Provider provider, @PathVariable long id) {
         questionService.deleteQuestion(provider, id);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public GetQuestionDetailResponse getQuestion(@PathVariable long id) {
         return questionService.getOneQuestion(id);
     }
@@ -54,7 +58,9 @@ class QuestionController {
     public Page<GetQuestionResponse> findQuestions(@RequestParam(value = "title", required = false) String title, Pageable pageable) {
         return questionService.findQuestions(title, pageable);
     }
-    @GetMapping("me")
+
+    @RolesAllowed({"USER"})
+    @GetMapping("/me")
     public Page<GetQuestionResponse> findMyQuestions(@AuthenticationPrincipal Provider provider, Pageable pageable) {
         return questionService.findMyQuestions(provider, pageable);
     }
