@@ -76,9 +76,9 @@ public class Question extends BaseEntity {
     }
 
     //질문 소유자 권한 체크
-    public void checkQuestionOwner(Provider provider, Question question) {
-        if (provider.id() != question.getWriter().getId() || provider.roles().contains(Role.ADMIN)) {
-            throw new QuestionForbiddenException(question.getId());
+    public void checkQuestionOwner(Provider provider) {
+        if (provider.id() != this.getWriter().getId() || provider.roles().contains(Role.ADMIN)) {
+            throw new QuestionForbiddenException(this.getId());
         }
     }
 
