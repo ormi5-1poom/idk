@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import team.onepoom.idk.common.exception.QuestionNotFoundException;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.question.dto.CreateQuestionRequest;
-import team.onepoom.idk.domain.question.dto.FindQuestionQuery;
 import team.onepoom.idk.domain.question.dto.GetQuestionDetailResponse;
 import team.onepoom.idk.domain.question.Question;
 import team.onepoom.idk.domain.question.dto.GetQuestionResponse;
 import team.onepoom.idk.domain.question.dto.ModifyQuestionRequest;
 import team.onepoom.idk.domain.user.User;
+import team.onepoom.idk.repository.CustomRepository;
 import team.onepoom.idk.repository.QuestionRepository;
 
 
@@ -23,6 +23,7 @@ import team.onepoom.idk.repository.QuestionRepository;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final CustomRepository customRepository;
 
     //질문 작성
     @Transactional
@@ -37,19 +38,17 @@ public class QuestionService {
 
     //단일 질문 조회
     public GetQuestionDetailResponse getOneQuestion(Long id) {
-        Question question = findQuestion(id);
-
-        return new GetQuestionDetailResponse(question);
+        return new GetQuestionDetailResponse(customRepository.findQuestion(id));
     }
 
     //질문 목록 조회
     public Page<GetQuestionResponse> findQuestions(String title, Pageable pageable) {
-        return questionRepository.findQuestions(title, pageable);
+        return customRepository.findQuestions(title, pageable);
     }
 
     //내 질문 조회
     public Page<GetQuestionResponse> findMyQuestions(Provider provider, Pageable pageable) {
-        return questionRepository.findMyQuestions(provider, pageable);
+        return customRepository.findMyQuestions(provider, pageable);
     }
 
 

@@ -7,18 +7,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.question.Question;
+import team.onepoom.idk.domain.user.dto.WriterDTO;
 
 @Getter
 @NoArgsConstructor
 public class GetQuestionResponse {
 
     private long id;
-    private Provider writer;
+    private WriterDTO writer;
     private String title;
     private String content;
     @JsonProperty("isSelected")
-    private boolean select;
-    private int answerCount;
+    private boolean selected;
+    private long answerCount;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
     private ZonedDateTime reportedAt;
@@ -26,13 +27,28 @@ public class GetQuestionResponse {
     @QueryProjection
     public GetQuestionResponse(Question question) {
         this.id = question.getId();
-        this.writer = question.getWriter().toProvider();
+        this.writer = new WriterDTO(question.getWriter());
         this.title = question.getTitle();
         this.content = question.getContent();
-        this.select = question.isSelected();
-        this.answerCount = 0; //todo 답변 엔티티 개발 시 작성
+        this.selected = question.isSelected();
+        this.answerCount = question.getAnswers().size();
         this.createdAt = question.getCreatedAt();
         this.updatedAt = question.getUpdatedAt();
         this.reportedAt = question.getReportedAt();
+    }
+
+    @QueryProjection
+    public GetQuestionResponse(long id, WriterDTO writer, String title, String content,
+        boolean selected, long answerCount, ZonedDateTime createdAt, ZonedDateTime updatedAt,
+        ZonedDateTime reportedAt) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
+        this.selected = selected;
+        this.answerCount = answerCount;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.reportedAt = reportedAt;
     }
 }

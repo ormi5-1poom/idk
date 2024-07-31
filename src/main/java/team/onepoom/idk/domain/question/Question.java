@@ -1,5 +1,6 @@
 package team.onepoom.idk.domain.question;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,15 +9,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import team.onepoom.idk.common.exception.QuestionForbiddenException;
 import team.onepoom.idk.domain.BaseEntity;
 import team.onepoom.idk.domain.Provider;
+import team.onepoom.idk.domain.answer.Answer;
 import team.onepoom.idk.domain.question.dto.ModifyQuestionRequest;
 import team.onepoom.idk.domain.user.Role;
 import team.onepoom.idk.domain.user.User;
@@ -41,6 +49,10 @@ public class Question extends BaseEntity {
 
     @Column(nullable = false, length = 1000)
     private String content;
+
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers = new ArrayList<>();
 
     @Column(nullable = false)
     private boolean isSelected;
