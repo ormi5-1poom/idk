@@ -37,9 +37,15 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    //단일 질문 조회
+    //질문 상세 조회
+    @Transactional
     public GetQuestionDetailResponse getOneQuestion(Long id) {
-        return new GetQuestionDetailResponse(customRepository.findQuestion(id));
+        Question question = customRepository.findQuestion(id);
+
+        //조회 수 증가
+        question.increaseViews();
+
+        return new GetQuestionDetailResponse(question);
     }
 
     //질문 목록 조회

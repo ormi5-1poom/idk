@@ -5,7 +5,6 @@ import com.querydsl.core.annotations.QueryProjection;
 import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.question.Question;
 import team.onepoom.idk.domain.user.dto.WriterDTO;
 

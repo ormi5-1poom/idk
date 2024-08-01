@@ -1,6 +1,5 @@
 package team.onepoom.idk.domain.question;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,14 +18,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import team.onepoom.idk.common.exception.QuestionForbiddenException;
 import team.onepoom.idk.domain.BaseEntity;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.answer.Answer;
 import team.onepoom.idk.domain.question.dto.ModifyQuestionRequest;
-import team.onepoom.idk.domain.user.Role;
 import team.onepoom.idk.domain.user.User;
 
 
@@ -97,6 +93,11 @@ public class Question extends BaseEntity {
         if (provider.id() != this.getWriter().getId()) {
             throw new QuestionForbiddenException(this.getId());
         }
+    }
+
+    //조회 수 증가
+    public void increaseViews() {
+        this.views += 1;
     }
 
     //Todo 질문 삭제 조건 검증

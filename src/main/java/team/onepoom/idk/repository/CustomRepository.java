@@ -1,6 +1,5 @@
 package team.onepoom.idk.repository;
 
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -20,7 +19,6 @@ import team.onepoom.idk.domain.question.dto.GetQuestionResponse;
 import team.onepoom.idk.domain.question.dto.QGetMyQuestionResponse;
 import team.onepoom.idk.domain.question.dto.QGetQuestionResponse;
 import team.onepoom.idk.domain.user.QUser;
-import team.onepoom.idk.domain.user.dto.WriterDTO;
 
 @RequiredArgsConstructor
 @Repository

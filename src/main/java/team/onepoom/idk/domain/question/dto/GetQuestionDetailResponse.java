@@ -23,6 +23,7 @@ public class GetQuestionDetailResponse {
     @JsonProperty("isSelected")
     private boolean selected;
     private long answerCount;
+    private long views;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
     private ZonedDateTime reportedAt;
@@ -38,6 +39,7 @@ public class GetQuestionDetailResponse {
             .collect(Collectors.toList());
         this.selected = question.isSelected();
         this.answerCount = question.getAnswers().size();
+        this.views = question.getViews();
         this.createdAt = question.getCreatedAt();
         this.updatedAt = question.getUpdatedAt();
         this.reportedAt = question.getReportedAt();
