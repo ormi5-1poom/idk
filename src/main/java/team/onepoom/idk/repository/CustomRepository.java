@@ -13,10 +13,8 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.answer.QAnswer;
-import team.onepoom.idk.domain.answer.dto.AnswerDTO;
 import team.onepoom.idk.domain.question.QQuestion;
 import team.onepoom.idk.domain.question.Question;
-import team.onepoom.idk.domain.question.dto.GetQuestionDetailResponse;
 import team.onepoom.idk.domain.question.dto.GetQuestionResponse;
 import team.onepoom.idk.domain.question.dto.QGetQuestionResponse;
 import team.onepoom.idk.domain.user.QUser;
@@ -33,24 +31,14 @@ public class CustomRepository {
 
     public Page<GetQuestionResponse> findQuestions(String title, Pageable pageable) {
         List<GetQuestionResponse> questions = queryFactory
-            .select(Projections.constructor(GetQuestionResponse.class,
-                question.id,
-                Projections.constructor(WriterDTO.class,
-                    user.id,
-                    user.email,
-                    user.nickname),
-                question.title,
-                question.content,
-                question.isSelected,
-                JPAExpressions.select(answer.count())
+            .select(new QGetQuestionResponse(
+                question,
+                JPAExpressions
+                    .select(answer.count())
                     .from(answer)
-                    .where(answer.question.id.eq(question.id)),
-                question.createdAt,
-                question.updatedAt,
-                question.reportedAt
-            ))
+                    .where(answer.question.id.eq(question.id))))
             .from(question)
-            .leftJoin(question.writer, user)
+            .leftJoin(question.writer).fetchJoin()
             .where(titleContains(title))
             .limit(pageable.getPageSize())
             .offset(pageable.getOffset())
@@ -83,7 +71,7 @@ public class CustomRepository {
                 question.reportedAt
             ))
             .from(question)
-            .leftJoin(question.writer, user)
+            .leftJoin(question.writer)
             .where(question.writer.id.eq(provider.id()))
             .limit(pageable.getPageSize())
             .offset(pageable.getOffset())
@@ -100,12 +88,11 @@ public class CustomRepository {
     public Question findQuestion(long id) {
         return queryFactory
             .selectFrom(question)
-            .leftJoin(question.writer, user).fetchJoin()
+            .leftJoin(question.writer).fetchJoin()
             .leftJoin(question.answers, answer).fetchJoin()
+            .leftJoin(answer.writer).fetchJoin()
             .where(question.id.eq(id))
             .fetchOne();
-
-
     }
 
     private BooleanExpression titleContains(String title) {

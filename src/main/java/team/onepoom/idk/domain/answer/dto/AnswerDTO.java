@@ -21,6 +21,7 @@ public class AnswerDTO {
     private ZonedDateTime reportedAt;
 
     @Builder
+    @QueryProjection
     public AnswerDTO(Answer answer) {
         this.id = answer.getId();
         this.writer = new WriterDTO(answer.getWriter());
@@ -29,17 +30,5 @@ public class AnswerDTO {
         this.createdAt = answer.getCreatedAt();
         this.updatedAt = answer.getUpdatedAt();
         this.reportedAt = answer.getReportedAt();
-    }
-
-    @QueryProjection
-    public AnswerDTO(long id, WriterDTO writer, String content, boolean isSelected,
-        ZonedDateTime createdAt, ZonedDateTime updatedAt, ZonedDateTime reportedAt) {
-        this.id = id;
-        this.writer = writer;
-        this.content = content;
-        this.isSelected = isSelected;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.reportedAt = reportedAt;
     }
 }

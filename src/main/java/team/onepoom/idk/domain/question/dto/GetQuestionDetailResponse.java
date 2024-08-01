@@ -37,25 +37,9 @@ public class GetQuestionDetailResponse {
             .map(AnswerDTO::new)
             .collect(Collectors.toList());
         this.selected = question.isSelected();
-        this.answerCount = 0;
+        this.answerCount = question.getAnswers().size();
         this.createdAt = question.getCreatedAt();
         this.updatedAt = question.getUpdatedAt();
         this.reportedAt = question.getReportedAt();
-    }
-
-    @QueryProjection
-    public GetQuestionDetailResponse(long id, WriterDTO writer, String title, String content,
-        List<AnswerDTO> answers, boolean selected, long answerCount, ZonedDateTime createdAt,
-        ZonedDateTime updatedAt, ZonedDateTime reportedAt) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.content = content;
-        this.answers = answers;
-        this.selected = selected;
-        this.answerCount = answerCount;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.reportedAt = reportedAt;
     }
 }
