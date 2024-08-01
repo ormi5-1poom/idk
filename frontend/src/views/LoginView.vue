@@ -1,5 +1,10 @@
 <script setup>
 import router from "@/router";
+import {onMounted, ref} from "vue";
+import axios from "axios";
+
+const username = ref("");
+const password = ref("");
 
 const goSignup = function () {
     router.push("/signup");
@@ -9,7 +14,27 @@ const goHome = function () {
     router.push("/");
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+const login = async function () {
+    try {
+        const credentials = btoa(`${username.value}:${password.value}`);
+        const authHeader = `Basic ${credentials}`;
+
+        const response = await axios.get('', {
+            headers: {
+                'Authorization': authHeader
+            }
+        });
+        console.log('Login successful: ', response.data);
+        localStorage.setItem('authHeader', authHeader);
+        axios.defaults.headers.common['Authorization'] = authHeader;
+        await router.replace('/');
+    } catch (error) {
+        alert("회원정보가 올바르지 않습니다.");
+        console.log('Login failed: ', error);
+    }
+}
+
+onMounted(() => {
     const inputs = document.querySelectorAll('.login-email, .login-password');
 
     inputs.forEach(input => {
@@ -25,7 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
+})
+
 </script>
 
 <template>
@@ -34,10 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <span>나 진짜 아무것도 모르겠어</span>
             <h2>I DON'T KNOW</h2>
         </div>
-        <div class="login-form">
-            <input type="email" class="login-email" placeholder="이메일">
-            <input type="password" class="login-password" placeholder="비밀번호">
-            <button>로그인</button>
+        <div class="login-form" @keyup.enter="login">
+            <input type="email" class="login-email" placeholder="이메일" v-model="username">
+            <input type="password" class="login-password" placeholder="비밀번호" v-model="password">
+            <button @click="login">로그인</button>
 
         </div>
         <div class="go-signup-button" @click="goSignup">
