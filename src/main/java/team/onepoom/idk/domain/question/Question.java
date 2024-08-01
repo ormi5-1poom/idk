@@ -82,6 +82,11 @@ public class Question extends BaseEntity {
         this.content = request.getContent();
     }
 
+    //관리자 삭제 메서드
+    public void deleteSoftQuestion() {
+        this.reportedAt = ZonedDateTime.now();
+    }
+
     //답변 채택 시
     public void answerSelected() {
         this.isSelected = true;
@@ -89,7 +94,7 @@ public class Question extends BaseEntity {
 
     //질문 소유자 권한 체크
     public void checkQuestionOwner(Provider provider) {
-        if (provider.id() != this.getWriter().getId() || provider.roles().contains(Role.ADMIN)) {
+        if (provider.id() != this.getWriter().getId()) {
             throw new QuestionForbiddenException(this.getId());
         }
     }
