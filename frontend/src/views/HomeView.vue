@@ -5,8 +5,8 @@ import {onMounted, ref} from "vue";
 
 const questions = ref([]);
 
-const goQuestion = function () {
-    router.push("/question/1");
+const goQuestion = function (id) {
+    router.push(`/question/${id}`);
 }
 const goNotice = function () {
     router.push("/notice/1");
@@ -33,12 +33,11 @@ onMounted(async () => {
 <template>
     <div>
         메인 페이지(첫 화면)
-        <button @click="goQuestion()">질문 상세</button>
         <button @click="goNotice()">공지사항 상세</button>
         <div>
             <ul v-for="question in questions" :key="question.id">
                 <li>
-                    <div>
+                    <div @click="goQuestion(question.id)">
                         {{question.writer.nickName}}
                         {{question.title}}
                         {{question.content}}
@@ -50,5 +49,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-
+li div {
+    cursor: pointer;
+}
 </style>
