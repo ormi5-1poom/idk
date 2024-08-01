@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.onepoom.idk.common.exception.QuestionHasAnswersException;
 import team.onepoom.idk.common.exception.QuestionNotFoundException;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.question.dto.CreateQuestionRequest;
@@ -62,18 +63,24 @@ public class QuestionService {
     //질문 수정
     @Transactional
     public void modifyQuestion(Provider provider, long id, ModifyQuestionRequest request) {
-        Question question = findQuestion(id);
-        question.checkQuestionOwner(provider);
+        Question question = getValidatedQuestion(provider, id);
         question.modifyQuestion(request);
     }
 
     //질문 삭제
     @Transactional
     public void deleteQuestion(Provider provider, Long id) {
+        Question question = getValidatedQuestion(provider, id);
+        questionRepository.delete(question);
+    }
+
+    private Question getValidatedQuestion(Provider provider, Long id) {
+        if (customRepository.existAnswer(id)) {
+            throw new QuestionHasAnswersException();
+        }
         Question question = findQuestion(id);
         question.checkQuestionOwner(provider);
-        question.validateDeleteCondition(question);
-        questionRepository.delete(question);
+        return question;
     }
 
     // id로 질문 조회

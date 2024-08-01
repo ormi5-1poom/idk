@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import team.onepoom.idk.domain.Provider;
+import team.onepoom.idk.domain.answer.Answer;
 import team.onepoom.idk.domain.answer.QAnswer;
 import team.onepoom.idk.domain.question.QQuestion;
 import team.onepoom.idk.domain.question.Question;
@@ -84,6 +85,14 @@ public class CustomRepository {
             .leftJoin(answer.writer).fetchJoin()
             .where(question.id.eq(id))
             .fetchOne();
+    }
+
+    public boolean existAnswer(long id) {
+        Answer answer = queryFactory
+            .selectFrom(this.answer)
+            .where(this.answer.question.id.eq(id))
+            .fetchFirst();
+        return answer != null;
     }
 
     private BooleanExpression titleContains(String title) {

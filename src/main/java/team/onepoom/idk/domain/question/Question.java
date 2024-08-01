@@ -1,5 +1,6 @@
 package team.onepoom.idk.domain.question;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -98,10 +99,5 @@ public class Question extends BaseEntity {
     //조회 수 증가
     public void increaseViews() {
         this.views += 1;
-    }
-
-    //Todo 질문 삭제 조건 검증
-    public void validateDeleteCondition(Question question) {
-        //질문의 답변이 존재할 시 Exception
     }
 }
