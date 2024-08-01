@@ -25,7 +25,7 @@ public class HttpConfiguration {
         AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
         http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(api -> api.requestMatchers("/**").permitAll()).formLogin(
-                builder -> builder.usernameParameter("email").loginProcessingUrl("/api/auth/login")
+                builder -> builder.usernameParameter("email").loginProcessingUrl("/api/users/login")
                     .disable()).authenticationProvider(provider)
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
             .with(new MyCustomDsl(), myCustomDsl -> {

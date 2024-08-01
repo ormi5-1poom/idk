@@ -19,7 +19,7 @@ const login = async function () {
         const credentials = btoa(`${username.value}:${password.value}`);
         const authHeader = `Basic ${credentials}`;
 
-        const response = await axios.get('', {
+        const response = await axios.post('/api/users/login', null, {
             headers: {
                 'Authorization': authHeader
             }
@@ -31,6 +31,8 @@ const login = async function () {
     } catch (error) {
         alert("회원정보가 올바르지 않습니다.");
         console.log('Login failed: ', error);
+        console.log(username.value)
+        console.log(password.value)
     }
 }
 
@@ -50,6 +52,8 @@ onMounted(() => {
             }
         });
     });
+
+    document.querySelector('.login-email').focus();
 })
 
 </script>

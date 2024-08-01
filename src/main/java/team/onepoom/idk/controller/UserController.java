@@ -59,4 +59,10 @@ public class UserController {
     public Provider getMe(@AuthenticationPrincipal Provider provider) {
         return provider;
     }
+
+    @RolesAllowed({"USER", "ADMIN", "SUSPEND"})
+    @PostMapping("login")
+    public void login() {
+
+    }
 }
