@@ -17,7 +17,7 @@ import team.onepoom.idk.domain.reportReason.dto.CreateReportReasonRequest;
 import team.onepoom.idk.service.ReportReasonService;
 
 @RestController
-@RequestMapping("/api/report_reasons")
+@RequestMapping("/api/report-reasons")
 public class ReportReasonController {
     private final ReportReasonService reportReasonService;
 
