@@ -83,7 +83,7 @@ public class Question extends BaseEntity {
     }
 
     //관리자 삭제 메서드
-    public void deleteSoftQuestion() {
+    public void report() {
         this.reportedAt = ZonedDateTime.now();
     }
 

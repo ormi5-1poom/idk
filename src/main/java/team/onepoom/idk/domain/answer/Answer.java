@@ -66,10 +66,7 @@ public class Answer extends BaseEntity {
     }
 
     //신고
-    public void report(Provider provider) {
-        if (!provider.roles().contains(Role.ADMIN)) {
-            throw new AnswerForbiddenException(provider.id());
-        }
+    public void report() {
         reportedAt = ZonedDateTime.now();
     }
 
