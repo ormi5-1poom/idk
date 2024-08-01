@@ -15,7 +15,9 @@ import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.answer.QAnswer;
 import team.onepoom.idk.domain.question.QQuestion;
 import team.onepoom.idk.domain.question.Question;
+import team.onepoom.idk.domain.question.dto.GetMyQuestionResponse;
 import team.onepoom.idk.domain.question.dto.GetQuestionResponse;
+import team.onepoom.idk.domain.question.dto.QGetMyQuestionResponse;
 import team.onepoom.idk.domain.question.dto.QGetQuestionResponse;
 import team.onepoom.idk.domain.user.QUser;
 import team.onepoom.idk.domain.user.dto.WriterDTO;
@@ -52,26 +54,15 @@ public class CustomRepository {
         return PageableExecutionUtils.getPage(questions, pageable, count::fetchOne);
     }
 
-    public Page<GetQuestionResponse> findMyQuestions(Provider provider, Pageable pageable) {
-        List<GetQuestionResponse> questions = queryFactory
-            .select(Projections.constructor(GetQuestionResponse.class,
-                question.id,
-                Projections.constructor(WriterDTO.class,
-                    user.id,
-                    user.email,
-                    user.nickname),
-                question.title,
-                question.content,
-                question.isSelected,
-                JPAExpressions.select(answer.count())
+    public Page<GetMyQuestionResponse> findMyQuestions(Provider provider, Pageable pageable) {
+        List<GetMyQuestionResponse> questions = queryFactory
+            .select(new QGetMyQuestionResponse(
+                question,
+                JPAExpressions
+                    .select(answer.count())
                     .from(answer)
-                    .where(answer.question.id.eq(question.id)),
-                question.createdAt,
-                question.updatedAt,
-                question.reportedAt
-            ))
+                    .where(answer.question.id.eq(question.id))))
             .from(question)
-            .leftJoin(question.writer)
             .where(question.writer.id.eq(provider.id()))
             .limit(pageable.getPageSize())
             .offset(pageable.getOffset())

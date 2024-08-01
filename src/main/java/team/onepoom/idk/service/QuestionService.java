@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.onepoom.idk.common.exception.QuestionNotFoundException;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.question.dto.CreateQuestionRequest;
+import team.onepoom.idk.domain.question.dto.GetMyQuestionResponse;
 import team.onepoom.idk.domain.question.dto.GetQuestionDetailResponse;
 import team.onepoom.idk.domain.question.Question;
 import team.onepoom.idk.domain.question.dto.GetQuestionResponse;
@@ -47,7 +48,7 @@ public class QuestionService {
     }
 
     //내 질문 조회
-    public Page<GetQuestionResponse> findMyQuestions(Provider provider, Pageable pageable) {
+    public Page<GetMyQuestionResponse> findMyQuestions(Provider provider, Pageable pageable) {
         return customRepository.findMyQuestions(provider, pageable);
     }
 

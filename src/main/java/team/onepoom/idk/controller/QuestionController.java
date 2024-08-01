@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.question.dto.CreateQuestionRequest;
+import team.onepoom.idk.domain.question.dto.GetMyQuestionResponse;
 import team.onepoom.idk.domain.question.dto.GetQuestionDetailResponse;
 import team.onepoom.idk.domain.question.dto.FindQuestionQuery;
 import team.onepoom.idk.domain.question.dto.GetQuestionResponse;
@@ -61,7 +62,7 @@ class QuestionController {
 
     @RolesAllowed({"USER"})
     @GetMapping("/me")
-    public Page<GetQuestionResponse> findMyQuestions(@AuthenticationPrincipal Provider provider, Pageable pageable) {
+    public Page<GetMyQuestionResponse> findMyQuestions(@AuthenticationPrincipal Provider provider, Pageable pageable) {
         return questionService.findMyQuestions(provider, pageable);
     }
 }
