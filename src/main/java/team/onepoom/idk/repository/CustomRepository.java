@@ -41,6 +41,7 @@ public class CustomRepository {
             .from(question)
             .leftJoin(question.writer).fetchJoin()
             .where(titleContains(title))
+            .where(question.reportedAt.isNull())
             .orderBy(question.createdAt.desc())
             .limit(pageable.getPageSize())
             .offset(pageable.getOffset())
