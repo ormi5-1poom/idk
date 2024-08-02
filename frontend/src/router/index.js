@@ -5,6 +5,7 @@ import HomeView from "@/views/HomeView.vue";
 import QuestionView from "@/views/QuestionView.vue";
 import NoticeView from "@/views/NoticeView.vue";
 import MyView from "@/views/MyView.vue";
+import WriteView from "@/views/WriteView.vue";
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
         path: "/my",
         name: "My",
         component: MyView
+    },
+    {
+        path: "/write",
+        name: "Write",
+        component: WriteView
     }
 ]
 

@@ -62,7 +62,6 @@ button {
     justify-content: center;
     width: 100vw;
     height: 100px;
-    border-bottom: 1px solid darkgray;
     flex-shrink: 0;
 }
 
@@ -71,18 +70,17 @@ button {
     justify-content: center;
     width: 100vw;
     height: 100px;
-    border-top: 1px solid darkgray;
     flex-shrink: 0;
+    background-color: #C5CCD2;
+    margin-top: 200px;
 }
 
 .body {
     flex: 1;
-    width: 70vw;
+    width: 60vw;
     height: auto;
     display: flex;
     justify-content: center;
-    border-left: 1px solid darkgrey;
-    border-right: 1px solid darkgrey;
 }
 </style>
 

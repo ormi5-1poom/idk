@@ -54,7 +54,7 @@ const goQuestions = function () {
 
 <style scoped>
 .header-wrap {
-    width: 70vw;
+    width: 60vw;
     height: 100px;
     display: flex;
     align-items: center;
@@ -86,11 +86,13 @@ h1 {
     max-width: 525px;
     width: 100%;
     height: 45px;
-    border: 5px solid #333A73;
+    border: 3px solid #333A73;
     border-radius: 20px;
     padding-left: 50px;
     font-family: 'Nexon Medium', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 45px;
+    letter-spacing: 1px;
     margin-left: auto;
     background-image: url("@/assets/search.png");
     background-repeat: no-repeat;

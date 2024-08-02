@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import team.onepoom.idk.common.annotation.SuspendDenied;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.question.dto.CreateQuestionRequest;
+import team.onepoom.idk.domain.question.dto.CreateQuestionResponse;
 import team.onepoom.idk.domain.question.dto.GetMyQuestionResponse;
 import team.onepoom.idk.domain.question.dto.GetQuestionDetailResponse;
 import team.onepoom.idk.domain.question.dto.GetQuestionResponse;
@@ -33,8 +34,8 @@ class QuestionController {
 
     @RolesAllowed({"USER"})
     @PostMapping
-    public void createQuestion(@AuthenticationPrincipal Provider provider, @RequestBody CreateQuestionRequest request) {
-        questionService.createQuestion(provider, request);
+    public CreateQuestionResponse createQuestion(@AuthenticationPrincipal Provider provider, @RequestBody CreateQuestionRequest request) {
+        return questionService.createQuestion(provider, request);
     }
 
     @RolesAllowed({"USER"})

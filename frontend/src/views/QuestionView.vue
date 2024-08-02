@@ -24,13 +24,13 @@ onMounted(async () => {
     <div v-if="question">
         <p>작성자: {{question.writer.nickName}}</p>
         <p>제목: {{question.title}}</p>
-        <p>내용: {{question.content}}</p>
+        <pre>내용: {{question.content}}</pre>
         <hr>
         <ul v-for="answer in question.answers" :key="answer.id">
             <li>
                 <div>
                     <p>{{answer.writer.nickName}}</p>
-                    <p>{{answer.content}}</p>
+                    <pre>{{answer.content}}</pre>
                 </div>
             </li>
         </ul>

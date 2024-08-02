@@ -21,4 +21,8 @@ const getQuestionAPI = function (id) {
     return instance.get(`/api/questions/${id}`);
 }
 
-export {createUserAPI, getQuestionsAPI, getQuestionAPI}
+const createQuestionAPI = function (request) {
+    return instance.post(`/api/questions`, request)
+}
+
+export {createUserAPI, getQuestionsAPI, getQuestionAPI, createQuestionAPI}

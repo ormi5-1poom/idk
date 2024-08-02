@@ -9,6 +9,7 @@ import team.onepoom.idk.common.exception.QuestionHasAnswersException;
 import team.onepoom.idk.common.exception.QuestionNotFoundException;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.question.dto.CreateQuestionRequest;
+import team.onepoom.idk.domain.question.dto.CreateQuestionResponse;
 import team.onepoom.idk.domain.question.dto.GetMyQuestionResponse;
 import team.onepoom.idk.domain.question.dto.GetQuestionDetailResponse;
 import team.onepoom.idk.domain.question.Question;
@@ -29,13 +30,17 @@ public class QuestionService {
 
     //질문 작성
     @Transactional
-    public void createQuestion(Provider provider, CreateQuestionRequest request) {
+    public CreateQuestionResponse createQuestion(Provider provider, CreateQuestionRequest request) {
         Question question = Question.builder()
             .writer(new User(provider.id()))
             .title(request.getTitle())
             .content(request.getContent())
             .build();
         questionRepository.save(question);
+
+        return CreateQuestionResponse.builder()
+            .id(question.getId())
+            .build();
     }
 
     //질문 상세 조회
