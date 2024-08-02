@@ -48,4 +48,8 @@ const deleteNoticeAPI = function (id) {
     return authInstance.delete(`/api/notices/${id}`);
 };
 
-export {createUserAPI, getQuestionsAPI, getQuestionAPI, createQuestionAPI, getNoticeAPI, editNoticeAPI, deleteNoticeAPI, createNoticeAPI}
+const deleteQuestionAPI = function (id) {
+    return authInstance.delete(`/api/questions/${id}`);
+}
+
+export {createUserAPI, getQuestionsAPI, getQuestionAPI, createQuestionAPI, getNoticeAPI, editNoticeAPI, deleteNoticeAPI, createNoticeAPI, deleteQuestionAPI}

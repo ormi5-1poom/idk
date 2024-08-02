@@ -1,7 +1,8 @@
 <script setup>
-import {getQuestionAPI} from "@/api";
+import {deleteQuestionAPI, getQuestionAPI} from "@/api";
 import {useRoute} from "vue-router";
 import {computed, nextTick, onMounted, ref, watch} from "vue";
+import router from "@/router";
 
 const question = ref(null);
 const content = ref("");
@@ -32,6 +33,17 @@ const formatDate = (dateString) => {
   return date.toISOString().split('T')[0];
 };
 
+const deleteQuestion = async function () {
+    try {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            await deleteQuestionAPI(question.value.id);
+            await router.push('/');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const formatCreatedAt = computed(() => {
   return question.value ? formatDate(question.value.createdAt) : '';
 });
@@ -58,7 +70,7 @@ onMounted(async () => {
       <pre class="question-contents">{{ question.content }}</pre>
       <div class="question-button">
         <button class="go-edit-button">수정하기</button>
-        <button class="blue-button">삭제하기</button>
+        <button class="blue-button" @click="deleteQuestion">삭제하기</button>
       </div>
       <hr>
 
