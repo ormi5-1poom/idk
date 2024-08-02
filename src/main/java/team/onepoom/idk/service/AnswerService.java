@@ -8,24 +8,36 @@ import org.springframework.transaction.annotation.Transactional;
 import team.onepoom.idk.common.exception.AnswerNotFoundException;
 import team.onepoom.idk.common.exception.SelectedAnswerForbiddenException;
 import team.onepoom.idk.common.exception.SelectionConflictException;
+import team.onepoom.idk.common.exception.UserNotFoundException;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.answer.Answer;
+import team.onepoom.idk.domain.answer.dto.AnswerDTO;
+import team.onepoom.idk.domain.answer.dto.CreateAnswerRequest;
 import team.onepoom.idk.domain.answer.dto.ModifyAnswerRequest;
 import team.onepoom.idk.domain.answer.dto.MyAnswerResponse;
+import team.onepoom.idk.domain.user.User;
 import team.onepoom.idk.repository.AnswerRepository;
+import team.onepoom.idk.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
-    private final QuestionService questionService;
+    private final UserRepository userRepository;
 
     @Transactional
-    public void create(Answer answer) {
-        long questionId = answer.getQuestion().getId();
-        questionService.findQuestion(questionId);
+    public AnswerDTO create(Provider provider, CreateAnswerRequest request) {
+        User user = userRepository.findById(provider.id())
+            .orElseThrow(() -> new UserNotFoundException(provider.id()));
+        Answer answer = Answer.builder()
+            .writer(user)
+            .questionId(request.questionId())
+            .content(request.content())
+            .build();
         answerRepository.save(answer);
+
+        return new AnswerDTO(answer);
     }
 
     @Transactional

@@ -53,8 +53,8 @@ public class Answer extends BaseEntity {
     }
 
     @Builder
-    Answer(Provider provider, long questionId, String content) {
-        this.writer = new User(provider.id());
+    Answer(User writer, long questionId, String content) {
+        this.writer = writer;
         this.question = new Question(questionId);
         this.content = content;
     }

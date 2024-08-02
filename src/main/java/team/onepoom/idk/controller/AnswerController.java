@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.onepoom.idk.domain.Provider;
+import team.onepoom.idk.domain.answer.dto.AnswerDTO;
 import team.onepoom.idk.domain.answer.dto.CreateAnswerRequest;
 import team.onepoom.idk.domain.answer.dto.ModifyAnswerRequest;
 import team.onepoom.idk.domain.answer.dto.MyAnswerResponse;
@@ -32,9 +33,9 @@ public class AnswerController {
     @PostMapping
     @RolesAllowed({"USER"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@AuthenticationPrincipal Provider provider,
+    public AnswerDTO create(@AuthenticationPrincipal Provider provider,
         @RequestBody CreateAnswerRequest request) {
-        answerService.create(request.toEntity(provider));
+        return answerService.create(provider, request);
     }
 
     @RolesAllowed({"USER", "ADMIN"})

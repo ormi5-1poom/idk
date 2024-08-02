@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.answer.Answer;
+import team.onepoom.idk.domain.user.User;
 
 public record CreateAnswerRequest(@Positive long questionId, @NotBlank String content) {
 
@@ -11,7 +12,7 @@ public record CreateAnswerRequest(@Positive long questionId, @NotBlank String co
         return Answer.builder()
             .questionId(questionId)
             .content(content)
-            .provider(provider)
+            .writer(new User(provider.id()))
             .build();
     }
 }
