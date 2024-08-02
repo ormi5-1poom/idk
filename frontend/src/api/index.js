@@ -10,8 +10,7 @@ import {setInterceptors} from "@/api/interceptors";
 //     }
 // })
 const createAuthInstance = function () {
-    const instance = axios.create({
-    })
+    const instance = axios.create({})
     return setInterceptors(instance);
 }
 const authInstance = createAuthInstance();
@@ -21,7 +20,8 @@ const createUserAPI = function (request) {
 }
 
 const getQuestionsAPI = function (request) {
-    return authInstance.get(`/api/questions?title=${request.title}&size=${request.size}&page=${request.page}`);
+    return authInstance.get(
+        `/api/questions?title=${request.title}&size=${request.size}&page=${request.page}`);
 }
 
 const getQuestionAPI = function (id) {
@@ -52,4 +52,19 @@ const deleteQuestionAPI = function (id) {
     return authInstance.delete(`/api/questions/${id}`);
 }
 
-export {createUserAPI, getQuestionsAPI, getQuestionAPI, createQuestionAPI, getNoticeAPI, editNoticeAPI, deleteNoticeAPI, createNoticeAPI, deleteQuestionAPI}
+const editQuestionAPI = function (id, request) {
+    return authInstance.put(`/api/questions/${id}`, request);
+};
+
+export {
+    createUserAPI,
+    getQuestionsAPI,
+    getQuestionAPI,
+    createQuestionAPI,
+    getNoticeAPI,
+    editNoticeAPI,
+    deleteNoticeAPI,
+    createNoticeAPI,
+    deleteQuestionAPI,
+    editQuestionAPI
+}

@@ -10,6 +10,7 @@ import AdminView from "@/views/AdminView.vue";
 import NoticeListView from "@/views/NoticeListView.vue";
 import NoticeWriteView from "@/views/NoticeWriteView.vue";
 import NoticeEditView from "@/views/NoticeEditView.vue";
+import QuestionEditView from "@/views/QuestionEditView.vue";
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
         path: "/question/write",
         name: "QuestionWrite",
         component: QuestionWriteView
+    },
+    {
+        path: "/question/:questionId/edit",
+        name: "QuestionEdit",
+        component: QuestionEditView
     },
     {
         path: "/notice/:noticeId",

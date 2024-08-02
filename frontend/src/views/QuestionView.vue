@@ -44,6 +44,10 @@ const deleteQuestion = async function () {
     }
 }
 
+const goEditQuestion = function () {
+    router.push(`/question/${question.value.id}/edit`);
+}
+
 const formatCreatedAt = computed(() => {
   return question.value ? formatDate(question.value.createdAt) : '';
 });
@@ -69,7 +73,7 @@ onMounted(async () => {
       </div>
       <pre class="question-contents">{{ question.content }}</pre>
       <div class="question-button">
-        <button class="go-edit-button">수정하기</button>
+        <button class="go-edit-button" @click="goEditQuestion">수정하기</button>
         <button class="blue-button" @click="deleteQuestion">삭제하기</button>
       </div>
       <hr>
