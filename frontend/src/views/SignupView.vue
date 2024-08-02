@@ -159,7 +159,7 @@ onMounted(() => {
     border: 1px solid #C5CCD2;
     border-radius: 10px 10px 0 0;
     padding-left: 50px;
-    font-family: 'Nexon Regular', sans-serif;
+    font-family: 'Nexon Medium', sans-serif;
     font-size: 16px;
     background-image: url("@/assets/email.png");
     background-repeat: no-repeat;
@@ -169,7 +169,7 @@ onMounted(() => {
 .signup-email::placeholder, .signup-password::placeholder, .signup-password-check::placeholder, .signup-nickname::placeholder {
     font-size: 15px;
     color: #C5CCD2;
-    font-family: 'Nexon Regular', sans-serif;
+    font-family: 'Nexon Medium', sans-serif;
 }
 
 .signup-password, .signup-password-check {

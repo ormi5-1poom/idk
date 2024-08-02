@@ -5,13 +5,13 @@ import FooterComponent from "@/components/FooterComponent.vue";
 </script>
 
 <template>
-    <div class="header" v-show="$route.name !== 'Login' && $route.name !== 'Signup'">
+    <div class="header" v-if="$route.name !== 'Login' && $route.name !== 'Signup'">
         <HeaderComponent/>
     </div>
     <div class="body">
         <RouterView/>
     </div>
-    <div class="footer" v-show="$route.name !== 'Login' && $route.name !== 'Signup'">
+    <div class="footer" v-if="$route.name !== 'Login' && $route.name !== 'Signup'">
         <FooterComponent/>
     </div>
 </template>

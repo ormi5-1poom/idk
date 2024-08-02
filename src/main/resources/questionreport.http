@@ -4,7 +4,7 @@ Authorization: Basic asdf@gmail.com qweqwe123
 content-type: application/json
 
 {
-  "questionId": 5,
+  "questionId": 1,
   "reportReasonId": 1
 }
 
@@ -13,7 +13,7 @@ GET localhost:8080/api/questions/reports
 Authorization: Basic qwer@gmail.com qweqwe123
 
 ### handle question reports
-POST localhost:8080/api/questions/reports/handle/3
+POST localhost:8080/api/questions/reports/handle/1
 Authorization: Basic qwer@gmail.com qweqwe123
 
 ### delete question reports
