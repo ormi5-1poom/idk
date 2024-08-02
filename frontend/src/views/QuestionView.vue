@@ -1,9 +1,10 @@
 <script setup>
 import {getQuestionAPI} from "@/api";
 import {useRoute} from "vue-router";
-import {computed, onMounted, ref} from "vue";
+import {computed, nextTick, onMounted, ref, watch} from "vue";
 
 const question = ref(null);
+const content = ref("");
 
 const getQuestion = async function () {
   try {
@@ -14,6 +15,18 @@ const getQuestion = async function () {
     console.log(error);
   }
 }
+
+const autoResize = function () {
+    const textarea = document.querySelector('textarea');
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+};
+watch(content, () => {
+    nextTick(() => {
+        autoResize();
+    })
+})
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toISOString().split('T')[0];
@@ -42,7 +55,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <p class="question-contents">{{ question.content }}</p>
+      <pre class="question-contents">{{ question.content }}</pre>
       <div class="question-button">
         <button class="go-edit-button">수정하기</button>
         <button class="blue-button">삭제하기</button>
@@ -58,7 +71,7 @@ onMounted(async () => {
       <div class="write-wrap">
         <div class="write-answer">
         <textarea name="answer-content" v-model="content" placeholder="내용을 입력해 주세요."
-                  maxlength="1000"></textarea>
+                  maxlength="1000" @input="autoResize"></textarea>
           <div>
             <strong>저작권 등 다른 사람의 권리를 침해하거나 명예를 훼손하는 게시물은 관리자에 의해 제재를 받으실 수 있습니다.</strong>
             <button class="blue-button">등록하기</button>
@@ -248,7 +261,7 @@ li {
   border-radius: 15px;
   border: 1px solid #000000;
   width: 100%;
-  height: 220px;
+  height: auto;
   padding: 50px;
   display: flex;
   flex-direction: column;
@@ -276,7 +289,8 @@ textarea {
   font-family: 'Nexon Medium', sans-serif;
   font-size: 25px;
   width: 100%;
-  height: 400px;
+  height: auto;
+    max-height: 400px;
   color: #000000;
   line-height: 40px;
   column-count: 10;
