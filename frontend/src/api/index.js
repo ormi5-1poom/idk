@@ -1,22 +1,36 @@
 import axios from "axios";
 import {setInterceptors} from "@/api/interceptors";
 
-// const hasAuthHeader = !!sessionStorage.getItem('authHeader');
-// const authHeader = sessionStorage.getItem('authHeader');
-//
-// const instance = axios.create({
-//     headers: {
-//         'Authorization': hasAuthHeader ? authHeader : ''
-//     }
-// })
 const createAuthInstance = function () {
     const instance = axios.create({})
     return setInterceptors(instance);
 }
 const authInstance = createAuthInstance();
 
+/**
+ * UserAPI
+ */
 const createUserAPI = function (request) {
     return authInstance.post(`/api/users/join`, request);
+}
+
+/**
+ * QuestionAPI
+ */
+const createQuestionAPI = function (request) {
+    return authInstance.post(`/api/questions`, request)
+}
+
+const editQuestionAPI = function (id, request) {
+    return authInstance.put(`/api/questions/${id}`, request);
+};
+
+const deleteQuestionAPI = function (id) {
+    return authInstance.delete(`/api/questions/${id}`);
+}
+
+const getQuestionAPI = function (id) {
+    return authInstance.get(`/api/questions/${id}`);
 }
 
 const getQuestionsAPI = function (request) {
@@ -24,18 +38,29 @@ const getQuestionsAPI = function (request) {
         `/api/questions?title=${request.title}&size=${request.size}&page=${request.page}`);
 }
 
-const getQuestionAPI = function (id) {
-    return authInstance.get(`/api/questions/${id}`);
+/**
+ * AnswerAPI
+ */
+const createAnswerAPI = function (request) {
+    return authInstance.post(`/api/answers`, request);
 }
 
-const createQuestionAPI = function (request) {
-    return authInstance.post(`/api/questions`, request)
-}
+const editAnswerAPI = function (id, request) {
+    return authInstance.put(`/api/answers/${id}`, request)
+};
 
-const getNoticeAPI = function (id) {
-    return authInstance.get(`/api/notices/${id}`)
-}
+const deleteAnswerAPI = function (id) {
+    return authInstance.delete(`/api/answers/${id}`);
+};
 
+const selectAnswerAPI = function (id) {
+    return authInstance.post(`/api/answers/${id}/selections`);
+};
+
+
+/**
+ * NoticeAPI
+ */
 const createNoticeAPI = function (request) {
     return authInstance.post(`/api/notices`, request);
 }
@@ -48,13 +73,25 @@ const deleteNoticeAPI = function (id) {
     return authInstance.delete(`/api/notices/${id}`);
 };
 
-const deleteQuestionAPI = function (id) {
-    return authInstance.delete(`/api/questions/${id}`);
+const getNoticeAPI = function (id) {
+    return authInstance.get(`/api/notices/${id}`)
 }
+/**
+ * ReportReasonAPI
+ */
 
-const editQuestionAPI = function (id, request) {
-    return authInstance.put(`/api/questions/${id}`, request);
-};
+/**
+ * QuestionReportAPI
+ */
+
+
+/**
+ * AnswerReportAPI
+ */
+
+
+
+
 
 export {
     createUserAPI,
@@ -66,5 +103,9 @@ export {
     deleteNoticeAPI,
     createNoticeAPI,
     deleteQuestionAPI,
-    editQuestionAPI
+    editQuestionAPI,
+    createAnswerAPI,
+    editAnswerAPI,
+    deleteAnswerAPI,
+    selectAnswerAPI
 }

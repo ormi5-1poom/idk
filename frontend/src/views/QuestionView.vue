@@ -1,5 +1,5 @@
 <script setup>
-import {deleteQuestionAPI, getQuestionAPI} from "@/api";
+import {createAnswerAPI, deleteQuestionAPI, getQuestionAPI} from "@/api";
 import {useRoute} from "vue-router";
 import {computed, nextTick, onMounted, ref, watch} from "vue";
 import router from "@/router";
@@ -51,6 +51,24 @@ const goEditQuestion = function () {
 const formatCreatedAt = computed(() => {
   return question.value ? formatDate(question.value.createdAt) : '';
 });
+
+const createAnswer = async function (questionId) {
+    try {
+        const createAnswerRequest = {
+            questionId: questionId,
+            content: content.value
+        };
+        const response = await createAnswerAPI(createAnswerRequest);
+
+        if (response.data) {
+            question.value.answers.push(response.data);
+            content.value = '';
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 onMounted(async () => {
   question.value = await getQuestion();
 })
@@ -90,7 +108,7 @@ onMounted(async () => {
                   maxlength="1000" @input="autoResize"></textarea>
           <div>
             <strong>저작권 등 다른 사람의 권리를 침해하거나 명예를 훼손하는 게시물은 관리자에 의해 제재를 받으실 수 있습니다.</strong>
-            <button class="blue-button">등록하기</button>
+            <button class="blue-button" @click="createAnswer(question.id)">등록하기</button>
           </div>
         </div>
       </div>
@@ -105,7 +123,7 @@ onMounted(async () => {
                 <img src="@/assets/report.png" alt="신고 아이콘">
               </button>
             </div>
-            <p class="answer-contents">{{ answer.content }}</p>
+            <pre class="answer-contents">{{ answer.content }}</pre>
           </div>
         </li>
       </ul>
