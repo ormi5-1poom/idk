@@ -72,7 +72,7 @@ button {
     height: 100px;
     flex-shrink: 0;
     background-color: #C5CCD2;
-    margin-top: 200px;
+    margin-top: 100px;
 }
 
 .body {

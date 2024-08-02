@@ -28,6 +28,8 @@ const createQuestion = async function () {
         await router.push(`/question/${response.data.id}`);
     } catch (error) {
         console.log(error);
+        alert("로그인이 필요한 서비스입니다.");
+        await router.push('/login');
     }
 }
 </script>

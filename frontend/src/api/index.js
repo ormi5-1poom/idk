@@ -25,4 +25,8 @@ const createQuestionAPI = function (request) {
     return instance.post(`/api/questions`, request)
 }
 
-export {createUserAPI, getQuestionsAPI, getQuestionAPI, createQuestionAPI}
+const getNoticeAPI = function (id) {
+    return instance.get(`/api/notices/${id}`)
+}
+
+export {createUserAPI, getQuestionsAPI, getQuestionAPI, createQuestionAPI, getNoticeAPI}

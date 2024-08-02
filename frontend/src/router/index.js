@@ -6,6 +6,7 @@ import QuestionView from "@/views/QuestionView.vue";
 import NoticeView from "@/views/NoticeView.vue";
 import MyView from "@/views/MyView.vue";
 import WriteView from "@/views/WriteView.vue";
+import AdminView from "@/views/AdminView.vue";
 
 const routes = [
     {
@@ -42,6 +43,11 @@ const routes = [
         path: "/write",
         name: "Write",
         component: WriteView
+    },
+    {
+        path: "/admin",
+        name: "Admin",
+        component: AdminView
     }
 ]
 
@@ -50,14 +56,25 @@ const router = createRouter({
     routes
 })
 
-// router.beforeEach((to, from, next) => {
-//     const isAuthenticated = !!sessionStorage.getItem('authHeader');
-//
-//     if (!isAuthenticated) {
-//         next('/login');
-//     } else {
-//         next();
+// router.beforeEach(async (to, from, next) => {
+//     try {
+//         if (to.path === '/login' || to.path === '/' || to.path === '/signup') {
+//             next();
+//         } else if (to.path === '/admin') {
+//             const response = await axios.post('/api/users/login', null);
+//             if (response.data.roles[0] === "ADMIN") {
+//                 console.log(response.data.roles[0]);
+//                 next();
+//             } else {
+//                 next('/login');
+//             }
+//         } else {
+//             next('/');
+//         }
+//     } catch (error) {
+//         console.log(error);
 //     }
+//
 // })
 
 

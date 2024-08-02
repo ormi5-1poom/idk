@@ -62,7 +62,7 @@ public class UserController {
 
     @RolesAllowed({"USER", "ADMIN", "SUSPEND"})
     @PostMapping("login")
-    public void login() {
-
+    public Provider login(@AuthenticationPrincipal Provider provider) {
+        return provider;
     }
 }

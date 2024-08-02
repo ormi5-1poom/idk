@@ -26,12 +26,11 @@ const login = async function () {
         });
         console.log('Login successful: ', response.data);
         sessionStorage.setItem('authHeader', authHeader);
+        sessionStorage.setItem('roles', response.data.roles);
         await router.replace('/');
     } catch (error) {
         alert("회원정보가 올바르지 않습니다.");
         console.log('Login failed: ', error);
-        console.log(username.value)
-        console.log(password.value)
     }
 }
 
