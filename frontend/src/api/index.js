@@ -29,4 +29,12 @@ const getNoticeAPI = function (id) {
     return instance.get(`/api/notices/${id}`)
 }
 
-export {createUserAPI, getQuestionsAPI, getQuestionAPI, createQuestionAPI, getNoticeAPI}
+const editNoticeAPI = function (id, request) {
+    return instance.put(`/api/notices/${id}`, request)
+}
+
+const deleteNoticeAPI = function (id) {
+    return instance.delete(`/api/notices/${id}`);
+};
+
+export {createUserAPI, getQuestionsAPI, getQuestionAPI, createQuestionAPI, getNoticeAPI, editNoticeAPI, deleteNoticeAPI}

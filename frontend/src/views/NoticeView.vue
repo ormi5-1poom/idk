@@ -1,7 +1,8 @@
 <script setup>
-import {getNoticeAPI} from "@/api";
+import {deleteNoticeAPI, getNoticeAPI} from "@/api";
 import {useRoute} from "vue-router";
 import {computed, onMounted, ref} from "vue";
+import router from "@/router";
 
 const notice = ref(null);
 
@@ -13,6 +14,23 @@ const getNotice = async function () {
         console.log(error);
     }
 }
+
+const goEditNotice = function () {
+    router.push(`/notice/${notice.value.id}/edit`);
+};
+
+const deleteNotice = async function () {
+    try {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            await deleteNoticeAPI(notice.value.id);
+            await router.push('/notice');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+};
+
 const formatCreatedAt = computed(() => {
     const createdAt = new Date(notice.value.createdAt);
     return createdAt.toISOString().split('T')[0];
@@ -42,8 +60,8 @@ onMounted(async () => {
             <pre>{{notice.content}}</pre>
         </div>
         <div class="notice-button">
-            <button class="go-edit-button" @click="goPre">수정하기</button>
-            <button class="delete-button" @click="createQuestion">삭제하기</button>
+            <button class="go-edit-button" @click="goEditNotice">수정하기</button>
+            <button class="delete-button" @click="deleteNotice">삭제하기</button>
         </div>
     </div>
 </template>

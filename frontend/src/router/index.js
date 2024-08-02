@@ -7,6 +7,7 @@ import NoticeView from "@/views/NoticeView.vue";
 import MyView from "@/views/MyView.vue";
 import WriteView from "@/views/WriteView.vue";
 import AdminView from "@/views/AdminView.vue";
+import NoticeListView from "@/views/NoticeListView.vue";
 
 const routes = [
     {
@@ -48,6 +49,11 @@ const routes = [
         path: "/admin",
         name: "Admin",
         component: AdminView
+    },
+    {
+        path: "/notice",
+        name: "NoticeList",
+        component: NoticeListView
     }
 ]
 
