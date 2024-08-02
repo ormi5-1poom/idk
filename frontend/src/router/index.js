@@ -5,9 +5,11 @@ import HomeView from "@/views/HomeView.vue";
 import QuestionView from "@/views/QuestionView.vue";
 import NoticeView from "@/views/NoticeView.vue";
 import MyView from "@/views/MyView.vue";
-import WriteView from "@/views/WriteView.vue";
+import QuestionWriteView from "@/views/QuestionWriteView.vue";
 import AdminView from "@/views/AdminView.vue";
 import NoticeListView from "@/views/NoticeListView.vue";
+import NoticeWriteView from "@/views/NoticeWriteView.vue";
+import NoticeEditView from "@/views/NoticeEditView.vue";
 
 const routes = [
     {
@@ -31,9 +33,29 @@ const routes = [
         component: QuestionView
     },
     {
+        path: "/question/write",
+        name: "QuestionWrite",
+        component: QuestionWriteView
+    },
+    {
         path: "/notice/:noticeId",
         name: "Notice",
         component: NoticeView
+    },
+    {
+        path: "/notice",
+        name: "NoticeList",
+        component: NoticeListView
+    },
+    {
+        path: "/notice/write",
+        name: "NoticeWrite",
+        component: NoticeWriteView
+    },
+    {
+        path: "/notice/:noticeId/edit",
+        name: "NoticeEdit",
+        component: NoticeEditView
     },
     {
         path: "/my",
@@ -41,20 +63,10 @@ const routes = [
         component: MyView
     },
     {
-        path: "/write",
-        name: "Write",
-        component: WriteView
-    },
-    {
         path: "/admin",
         name: "Admin",
         component: AdminView
     },
-    {
-        path: "/notice",
-        name: "NoticeList",
-        component: NoticeListView
-    }
 ]
 
 const router = createRouter({

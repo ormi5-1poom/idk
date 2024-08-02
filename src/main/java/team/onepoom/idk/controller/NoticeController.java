@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import team.onepoom.idk.domain.Provider;
 import team.onepoom.idk.domain.notice.dto.AllNoticeResponse;
 import team.onepoom.idk.domain.notice.dto.CreateNoticeRequest;
+import team.onepoom.idk.domain.notice.dto.CreateNoticeResponse;
 import team.onepoom.idk.domain.notice.dto.DetailNoticeResponse;
 import team.onepoom.idk.domain.notice.dto.FiveNoticeResponse;
 import team.onepoom.idk.domain.notice.dto.UpdateNoticeRequest;
@@ -40,9 +41,9 @@ public class NoticeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @RolesAllowed({"ADMIN"})
-    public void createNotice(@AuthenticationPrincipal Provider provider,
+    public CreateNoticeResponse createNotice(@AuthenticationPrincipal Provider provider,
         @RequestBody CreateNoticeRequest createNoticeRequest) {
-        noticeService.create(createNoticeRequest.toEntity(provider));
+        return noticeService.create(createNoticeRequest.toEntity(provider));
     }
 
     @PutMapping("/{id}")

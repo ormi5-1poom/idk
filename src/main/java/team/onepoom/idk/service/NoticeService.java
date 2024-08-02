@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.onepoom.idk.domain.notice.Notice;
 import team.onepoom.idk.common.exception.NoticeNotFoundException;
 import team.onepoom.idk.domain.notice.dto.AllNoticeResponse;
+import team.onepoom.idk.domain.notice.dto.CreateNoticeResponse;
 import team.onepoom.idk.domain.notice.dto.DetailNoticeResponse;
 import team.onepoom.idk.domain.notice.dto.FiveNoticeResponse;
 import team.onepoom.idk.repository.NoticeRepository;
@@ -25,8 +26,12 @@ public class NoticeService {
     }
 
     @Transactional
-    public void create(Notice notice) {
+    public CreateNoticeResponse create(Notice notice) {
         noticeRepository.save(notice);
+
+        return CreateNoticeResponse.builder()
+            .id(notice.getId())
+            .build();
     }
 
     @Transactional
