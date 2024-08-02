@@ -97,7 +97,8 @@ h2 {
 .notice-text {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 20px;
 }
 img {
     margin-right: 30px;
