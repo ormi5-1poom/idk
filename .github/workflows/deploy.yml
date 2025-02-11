@@ -1,10 +1,7 @@
-name: IDK CI/CD
+name: Deploy
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -15,10 +12,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
       - name: Create application.yml from GitHub Secrets
         run: |
           mkdir -p src/main/resources/
           echo "${{ secrets.APPLICATION_YML }}" | tee src/main/resources/application.yml
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -48,7 +70,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USER }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            docker pull ${{ secrets.SERVER_IMAGE_TAG }}
-            docker pull ${{ secrets.CLIENT_IMAGE_TAG }}
-            docker compose down
-            docker compose up --build -d
+            docker compose down -v
+            docker compose pull
+            docker compose up -d
+            docker image prune -af
