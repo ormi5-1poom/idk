@@ -19,22 +19,24 @@ public class GetQuestionResponse {
     @JsonProperty("isSelected")
     private boolean selected;
     private long answerCount;
-    private long views;
+    private int views;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
     private ZonedDateTime reportedAt;
 
     @QueryProjection
-    public GetQuestionResponse(Question question, Long answerCount) {
-        this.id = question.getId();
-        this.writer = new WriterDTO(question.getWriter());
-        this.title = question.getReportedAt() == null ? question.getTitle() : "신고된 게시물입니다." ;
-        this.content = question.getReportedAt() == null ? question.getContent() : "신고된 게시물입니다.";
-        this.selected = question.isSelected();
+    public GetQuestionResponse(long id, long writerId, String email, String nickname, String title, String content,
+        boolean selected, int views, ZonedDateTime createdAt,
+        ZonedDateTime updatedAt, ZonedDateTime reportedAt, long answerCount) {
+        this.id = id;
+        this.writer = new WriterDTO(writerId, email, nickname);
+        this.title = reportedAt == null ? title : "신고된 게시물입니다." ;
+        this.content = reportedAt == null ? content : "신고된 게시물입니다.";
+        this.selected = selected;
         this.answerCount = answerCount;
-        this.views = question.getViews();
-        this.createdAt = question.getCreatedAt();
-        this.updatedAt = question.getUpdatedAt();
-        this.reportedAt = question.getReportedAt();
+        this.views = views;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.reportedAt = reportedAt;
     }
 }

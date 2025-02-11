@@ -33,13 +33,23 @@ public class CustomRepository {
     public Page<GetQuestionResponse> findQuestions(String title, Pageable pageable) {
         List<GetQuestionResponse> questions = queryFactory
             .select(new QGetQuestionResponse(
-                question,
+                question.id,
+                question.writer.id,
+                question.writer.email,
+                question.writer.nickname,
+                question.title,
+                question.content,
+                question.isSelected,
+                question.views,
+                question.createdAt,
+                question.updatedAt,
+                question.reportedAt,
                 JPAExpressions
                     .select(answer.count())
                     .from(answer)
                     .where(answer.question.id.eq(question.id))))
             .from(question)
-            .leftJoin(question.writer).fetchJoin()
+            .leftJoin(question.writer)
             .where(titleContains(title))
             .where(question.reportedAt.isNull())
             .orderBy(question.createdAt.desc())

@@ -20,8 +20,8 @@ const isSuspend = computed(() => userRoles.value.includes('SUSPEND'));
 
 // 날짜 yyyy-MM-dd 형식 출력
 const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return date.toISOString().split('T')[0];
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
 };
 
 const goQuestion = function (id) {
@@ -48,38 +48,76 @@ const goNoticeDetail = function (id) {
 const currentPage = ref(0);
 const totalPages = ref(0);
 const pageSize = 10;
+const showPage = ref(10); // 한 번에 보여줄 페이지 수
+
+const startPage = computed(() => {
+    return Math.floor(currentPage.value / showPage.value) * showPage.value;
+});
+
+const endPage = computed(() => {
+    const end = startPage.value + showPage.value - 1;
+    return end >= totalPages.value ? totalPages.value - 1 : end;
+});
+
+const visiblePages = computed(() => {
+    const pages = [];
+    for (let i = startPage.value; i <= endPage.value; i++) {
+        pages.push(i);
+    }
+    return pages;
+});
+
+const hasNextGroup = computed(() => {
+    return endPage.value < totalPages.value - 1;
+});
+
+const hasPrevGroup = computed(() => {
+    return startPage.value > 0;
+});
 
 const getQuestions = async function (query = '', page = 0) {
-  if (isLoading.value) return;
-  isLoading.value = true;
-  try {
-    const getQuestionsRequest = {
-      title: query,
-      size: pageSize,
-      page: page
+    if (isLoading.value) return;
+    isLoading.value = true;
+    try {
+        const getQuestionsRequest = {
+            title: query,
+            size: pageSize,
+            page: page
+        }
+        const response = await getQuestionsAPI(getQuestionsRequest);
+        questions.value = response.data.content;
+        totalPages.value = response.data.totalPages;
+        currentPage.value = page;
+    } catch (error) {
+        console.log(error);
+    } finally {
+        isLoading.value = false;
     }
-    const response = await getQuestionsAPI(getQuestionsRequest);
-    questions.value = response.data.content;
-    totalPages.value = response.data.totalPages;
-    currentPage.value = page;
-  } catch (error) {
-    console.log(error);
-  } finally {
-    isLoading.value = false;
-  }
 }
 
 const changePage = (page) => {
-  getQuestions(route.query.search, page);
+    getQuestions(route.query.search, page);
 }
 
-const pageNumbers = computed(() => {
-  const pages = [];
-  for (let i = 0; i < totalPages.value; i++) {
-    pages.push(i);
-  }
-  return pages;
-});
+const goToFirstPage = () => {
+    changePage(0);
+};
+
+const goToLastPage = () => {
+    changePage(totalPages.value - 1);
+};
+
+const goToNextGroup = () => {
+    if (hasNextGroup.value) {
+        changePage(endPage.value + 1);
+    }
+};
+
+const goToPrevGroup = () => {
+    if (hasPrevGroup.value) {
+        changePage(startPage.value - 1);
+    }
+};
 
 const getNoticesTop5 = async function () {
     try {
@@ -91,19 +129,17 @@ const getNoticesTop5 = async function () {
 };
 
 onMounted(() => {
-  getQuestions(route.query.search || ''); // 검색어가 없으면 빈 문자열 전달
-  getNoticesTop5();
+    getQuestions(route.query.search || ''); // 검색어가 없으면 빈 문자열 전달
+    getNoticesTop5();
 })
 
 watch(() => route.query.search, (newTitle) => {
-  getQuestions(newTitle || ''); // 검색어가 없으면 빈 문자열 전달
+    getQuestions(newTitle || ''); // 검색어가 없으면 빈 문자열 전달
 })
 </script>
 
 <template>
-
     <div class="wrap">
-
         <div class="question">
             <div class="question-write">
                 <span>지금 이 순간 게시글</span>
@@ -119,7 +155,7 @@ watch(() => route.query.search, (newTitle) => {
                                     formatDate(question.createdAt)
                                 }} | 조회수 {{ question.views }}</span>
                         </div>
-                        <div class="question-title" >
+                        <div class="question-title">
                             <span class="move question-title1">{{ question.title }}</span>
                             <span class="question-title2">{{ question.answerCount }}개의 답변</span>
                         </div>
@@ -127,16 +163,45 @@ watch(() => route.query.search, (newTitle) => {
                     </div>
                 </li>
             </ul>
-          <div class="pagination">
-            <button
-                v-for="page in pageNumbers"
-                :key="page"
-                @click="changePage(page)"
-                :class="{ active: currentPage === page }"
-            >
-              {{ page + 1 }}
-            </button>
-          </div>
+            <div class="pagination">
+                <button
+                    @click="goToFirstPage"
+                    :disabled="currentPage === 0"
+                    class="pagination-button"
+                >
+                    &lt;&lt;
+                </button>
+                <button
+                    @click="goToPrevGroup"
+                    :disabled="!hasPrevGroup"
+                    class="pagination-button"
+                >
+                    &lt;
+                </button>
+                <button
+                    v-for="page in visiblePages"
+                    :key="page"
+                    @click="changePage(page)"
+                    :class="{ active: currentPage === page }"
+                    class="pagination-button"
+                >
+                    {{ page + 1 }}
+                </button>
+                <button
+                    @click="goToNextGroup"
+                    :disabled="!hasNextGroup"
+                    class="pagination-button"
+                >
+                    &gt;
+                </button>
+                <button
+                    @click="goToLastPage"
+                    :disabled="currentPage === totalPages - 1"
+                    class="pagination-button"
+                >
+                    &gt;&gt;
+                </button>
+            </div>
         </div>
 
         <div class="notice">
@@ -150,7 +215,7 @@ watch(() => route.query.search, (newTitle) => {
                     <div class="notice-wrap">
                         <img src="@/assets/yellow-dot.svg" alt="" class="dot">
                         <div class="go-notice" @click="goNoticeDetail(notice.id)">
-                            <p class="notice-title" >
+                            <p class="notice-title">
                                 {{ notice.title }}</p>
                             <p class="notice-date">{{ formatDate(notice.createdAt) }}</p>
                         </div>
@@ -158,17 +223,13 @@ watch(() => route.query.search, (newTitle) => {
                 </li>
             </ul>
         </div>
-
     </div>
-
 </template>
 
 <style scoped>
-
 .wrap {
     display: flex;
     justify-content: space-between;
-
     width: 100%;
 }
 
@@ -179,24 +240,25 @@ watch(() => route.query.search, (newTitle) => {
 .notice {
     width: 30%;
 }
+
 .move {
     cursor: pointer;
 }
+
 .question-wrap {
     cursor: pointer;
 }
+
 .question-write {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     height: 50px;
     margin-bottom: 15px;
     padding: 0 15px;
     background-color: #333A73;
     border: none;
     border-radius: 15px;
-
     font-family: 'Nexon Bold', sans-serif;
     color: #FFFFFF;
     font-size: 20px;
@@ -210,7 +272,6 @@ watch(() => route.query.search, (newTitle) => {
 .question-writer {
     display: flex;
     justify-content: space-between;
-
     padding: 0 15px 10px 15px;
 }
 
@@ -234,14 +295,12 @@ watch(() => route.query.search, (newTitle) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     height: 50px;
     margin-bottom: 15px;
     padding: 0 15px;
     background-color: #FBA834;
     border: none;
     border-radius: 15px;
-
     font-family: 'Nexon Bold', sans-serif;
     color: #000000;
     font-size: 20px;
@@ -254,7 +313,6 @@ watch(() => route.query.search, (newTitle) => {
 
 .notice-wrap {
     display: flex;
-
 }
 
 .dot {
@@ -279,32 +337,46 @@ watch(() => route.query.search, (newTitle) => {
     cursor: pointer;
     width: 100%;
 }
+
 .pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px;
 }
 
-.pagination button {
-  margin: 0 5px;
-  padding: 5px 10px;
-  border: 1px solid #333A73;
-  background-color: #FFFFFF;
-  color: #333A73;
-  cursor: pointer;
-  font-family: 'Nexon Medium', sans-serif;
+.pagination-button {
+    padding: 5px 10px;
+    border: 1px solid #333A73;
+    background-color: #FFFFFF;
+    color: #333A73;
+    cursor: pointer;
+    font-family: 'Nexon Medium', sans-serif;
+    min-width: 35px;
 }
 
-.pagination button.active {
-  background-color: #333A73;
-  color: #FFFFFF;
+.pagination-button:disabled {
+    border-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
 }
+
+.pagination-button.active {
+    background-color: #333A73;
+    color: #FFFFFF;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #f0f0f0;
+}
+
 .question-title1 {
     flex: 5;
     overflow-x: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 .question-title2 {
     flex: 3;
     text-align: end;
