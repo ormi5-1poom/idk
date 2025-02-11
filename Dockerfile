@@ -2,7 +2,7 @@
 FROM gradle:8.8-jdk21 AS build
 WORKDIR /app
 COPY . .
-RUN gradle build --no-daemon -x test
+RUN gradle build -x test
 
 # Run stage
 FROM --platform=linux/amd64 openjdk:21-jdk
