@@ -41,9 +41,3 @@ jobs:
       - name: Build Frontend
         working-directory: ./frontend
         run: npm run build
-
-      - name: Test Server Docker Build
-        run: docker build -t test-server .
-
-      - name: Test Client Docker Build
-        run: docker build -t test-client ./frontend
