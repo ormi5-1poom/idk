@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USER }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            docker compose down -v
+            docker compose down
             docker compose pull
             docker compose up -d || exit 1
             if [ $? -ne 0]; then
