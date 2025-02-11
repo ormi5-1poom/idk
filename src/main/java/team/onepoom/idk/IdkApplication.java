@@ -9,5 +9,5 @@ public class IdkApplication {
     public static void main(String[] args) {
         SpringApplication.run(IdkApplication.class, args);
     }
-    // test
+    // CI/CD 테스트
 }
