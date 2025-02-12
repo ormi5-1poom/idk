@@ -5,7 +5,7 @@ COPY . .
 RUN gradle build -x test
 
 # Run stage
-FROM --platform=linux/amd64 openjdk:21-jre
+FROM --platform=linux/amd64 openjdk:jre-alpine
 
 WORKDIR /app
 
