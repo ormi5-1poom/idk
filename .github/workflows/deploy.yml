@@ -28,13 +28,13 @@ jobs:
 
       - name: Build and Push Server Image
         run: |
-          docker build -t ${{ secrets.SERVER_IMAGE_TAG }} .
-          docker push ${{ secrets.SERVER_IMAGE_TAG }}
+          docker build -t ${{ secrets.SERVER_IMAGE_TAG }}:${{ env.VERSION }} .
+          docker push ${{ secrets.SERVER_IMAGE_TAG }}:${{ env.VERSION }}
 
       - name: Build and Push Client Image
         run: |
-          docker build -t ${{ secrets.CLIENT_IMAGE_TAG }} ./frontend
-          docker push ${{ secrets.CLIENT_IMAGE_TAG }}
+          docker build -t ${{ secrets.CLIENT_IMAGE_TAG }}:${{ env.VERSION }} ./frontend
+          docker push ${{ secrets.CLIENT_IMAGE_TAG }}:${{ env.VERSION }}
 
   deploy:
     needs: [build]
