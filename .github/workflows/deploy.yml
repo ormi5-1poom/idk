@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ env.VERSION }}
 
     steps:
       - uses: actions/checkout@v4
@@ -48,11 +50,11 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USER }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            export VERSION=${{ env.VERSION }}
+            export VERSION=${{ needs.build.outputs.version }}
             docker compose down
             docker compose pull
             docker compose up -d || exit 1
-            if [ $? -ne 0]; then
+            if [ $? -ne 0 ]; then
               echo "Docker compose failed"
               exit 1
             fi
