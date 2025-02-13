@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set version from git hash
+        run: echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Create application.yml from GitHub Secrets
         run: |
           mkdir -p src/main/resources/
@@ -44,7 +47,9 @@ jobs:
           host: ${{ secrets.REMOTE_SERVER_IP }}
           username: ${{ secrets.REMOTE_SERVER_USER }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
+          envs: VERSION
           script: |
+            export VERSION=$VERSION
             docker compose down
             docker compose pull
             docker compose up -d || exit 1
