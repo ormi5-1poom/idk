@@ -47,10 +47,8 @@ jobs:
           host: ${{ secrets.REMOTE_SERVER_IP }}
           username: ${{ secrets.REMOTE_SERVER_USER }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
-          envs: VERSION
           script: |
-            echo "Deploying version: $VERSION"
-            export VERSION=$VERSION
+            export VERSION=${{ env.VERSION }}
             docker compose down
             docker compose pull
             docker compose up -d || exit 1
