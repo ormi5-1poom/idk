@@ -4,7 +4,7 @@
 
 <template>
     <div class="footer-wrap">
-        <b>나 진짜 아무것도 모르겠어</b>
+        <b>나 진짜 아무것도 모르겠어 V2</b>
     </div>
 </template>
 
